@@ -49,7 +49,7 @@ public class Main {
             String[] lastData =datas.get(datas.size()-1).split(" ");
             City initialCity = map.findCityByLabel(lastData[0]);
             City finalCity = map.findCityByLabel(lastData[1]);
-            
+            System.out.println(initialCity);
             map.printAdjacency();
             
             
