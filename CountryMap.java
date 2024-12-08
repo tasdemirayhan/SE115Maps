@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CountryMap {
     private ArrayList<City> cities;
@@ -8,7 +9,7 @@ public class CountryMap {
         this.numberOfCity = numberOfCity;
         cities= new ArrayList<City>();
         adjacency = new int[numberOfCity][numberOfCity];
-        full(adjacency);
+        fullDouble(adjacency);
     }
     public ArrayList<City> getCities() {
         return cities;
@@ -28,7 +29,7 @@ public class CountryMap {
     public void setNumberOfCity(int numberOfCity) {
         this.numberOfCity = numberOfCity;
     }
-    public void full(int[][] arr){
+    public void fullDouble(int[][] arr){
         for (int i=0;i<arr.length;i++) {
             for(int j=0;j<arr[i].length;j++){
                 if(i==j){
@@ -39,6 +40,12 @@ public class CountryMap {
                 }
             }
         }
+    }
+    public void fullSingle(int[] arr, int index){
+        for (int i=0;i<arr.length;i++) {
+            arr[i]=Integer.MAX_VALUE;
+        }
+        arr[index]=0;
     }
     public void addCity(City city){
         cities.add(city);
@@ -70,11 +77,43 @@ public class CountryMap {
     public void printAdjacency(){
         for (int i=0;i<adjacency.length;i++) {
             for(int j=0;j<adjacency[i].length;j++){
-                System.out.println(adjacency[i][j] + ",");
+                System.out.printf("%11d", adjacency[i][j]);
             }
             System.out.println();
         }
     }
+     
+    // ziyaret edilmemiş en küçük indexi döndürür
+    private int findMinIndex(int[] dist, boolean[] visited) {
+        int minVal = Integer.MAX_VALUE;
+        int minIndex = -1;
 
+        for (int i = 0; i < dist.length; i++) {
+            if (!visited[i] && dist[i] < minVal) {
+                minVal= dist[i];
+                minIndex = i;
+            }
+        }
+        return minIndex; 
+    }
+    public int[] createShortestPath(int index){
+        int[] distance = new int[adjacency.length]; // sum of all steps distances
+        boolean[] isVisited = new boolean[adjacency.length];
+        fullSingle(distance,index);
+        
+        for(int i=0;i<distance.length-1;i++){
+            int min  = findMinIndex(distance, isVisited);
+            isVisited[min]=true;
+            // j indexli data ziyaret edilmemişse, min/j arasında bir kenar varsa
+            // ve min üzerinden j'ye olan mesafe daha kısa ise distance[j] yi güncelle
+            //distance[j], her tur distance[min] le tanımlanır
+            for(int j=0;j<distance.length;j++){
+                if(!isVisited[j] && adjacency[min][j]!=0 && distance[min]!=Integer.MAX_VALUE && distance[min] + adjacency[min][j]<distance[j]){
+                    distance[j] = distance[min] + adjacency[min][j];
+                }
+            }
+        }
+        return distance;
+    }
 }
 

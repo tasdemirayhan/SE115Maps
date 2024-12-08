@@ -49,14 +49,15 @@ public class Main {
             String[] lastData =datas.get(datas.size()-1).split(" ");
             City initialCity = map.findCityByLabel(lastData[0]);
             City finalCity = map.findCityByLabel(lastData[1]);
-            System.out.println(initialCity);
-            map.printAdjacency();
-            
+           
+            //map.printAdjacency();
+            int[] s = map.createShortestPath(3);
+            System.out.println(Arrays.toString(s));
             
             
             
         } catch (Exception e) {
-            
+            System.out.println(e.toString());
         }
     }
    public static void errorMessage(){
