@@ -2,19 +2,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CountryMap {
-    private ArrayList<City> cities;
+    private City[] cities;
     private int[][] adjacency;
     private int numberOfCity;
+    private int numCities;
     public CountryMap(int numberOfCity) {
         this.numberOfCity = numberOfCity;
-        cities= new ArrayList<City>();
+        cities= new City[numberOfCity];
         adjacency = new int[numberOfCity][numberOfCity];
         fullDouble(adjacency);
+        this.numCities=0;
     }
-    public ArrayList<City> getCities() {
+    public City[] getCities() {
         return cities;
     }
-    public void setCities(ArrayList<City> cities) {
+    public void setCities(City[] cities) {
         this.cities = cities;
     }
     public int[][] getAdjacency() {
@@ -48,11 +50,11 @@ public class CountryMap {
         arr[index]=0;
     }
     public void addCity(City city){
-        cities.add(city);
+        cities[numCities++] = city;        
     }
     public int getCityIndex(City city){
-        for (int i=0;i<cities.size();i++) {
-            if(city.getLabel().equals(cities.get(i).getLabel())){
+        for (int i=0;i<cities.length;i++) {
+            if(city.getLabel().equals(cities[i].getLabel())){
                 return i;
             }
         }
@@ -70,8 +72,9 @@ public class CountryMap {
         City city1 = findCityByLabel(label1);
         City city2 = findCityByLabel(label2);
         if (city1 != null && city2 != null) {
-            adjacency[cities.indexOf(city1)][cities.indexOf(city2)]= time;
-            adjacency[cities.indexOf(city1)][cities.indexOf(city2)]= time;
+            
+            adjacency[getCityIndex(city2)][getCityIndex(city1)]= time;
+            adjacency[getCityIndex(city1)][getCityIndex(city2)]= time;
         }
     }
     public void printAdjacency(){
@@ -115,5 +118,9 @@ public class CountryMap {
         }
         return distance;
     }
+
+    
+
+    
 }
 
