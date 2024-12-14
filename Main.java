@@ -54,6 +54,7 @@ public class Main {
             //map.printAdjacency();
             //System.out.println(Arrays.toString(map.createShortestPath(0)));
            System.out.println(Arrays.toString(map.createShortestPath(0)));
+           System.out.println(count);
 
         } catch (Exception e) {
             System.out.println("Hata oluştu: " + e.getMessage());
