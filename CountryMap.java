@@ -6,6 +6,7 @@ public class CountryMap {
     private int[][] adjacency;
     private int numberOfCity;
     private int numCities;
+    
     public CountryMap(int numberOfCity) {
         this.numberOfCity = numberOfCity;
         cities= new City[numberOfCity];
@@ -13,6 +14,7 @@ public class CountryMap {
         fullDouble(adjacency);
         this.numCities=0;
     }
+
     public City[] getCities() {
         return cities;
     }
@@ -43,11 +45,11 @@ public class CountryMap {
             }
         }
     }
-    public void fullSingle(int[] arr, int index){
+    public void fullSingle(int[] arr){
         for (int i=0;i<arr.length;i++) {
             arr[i]=Integer.MAX_VALUE;
         }
-        arr[index]=0;
+        //arr[index]=0;
     }
     public void addCity(City city){
         cities[numCities++] = city;        
@@ -87,7 +89,7 @@ public class CountryMap {
     }
      
     // ziyaret edilmemiş en küçük indexi döndürür
-    private int findMinIndex(int[] dist, boolean[] visited) {
+   /*  private int findMinIndex(int[] dist, boolean[] visited) {
         int minVal = Integer.MAX_VALUE;
         int minIndex = -1;
 
@@ -99,11 +101,14 @@ public class CountryMap {
         }
         return minIndex; 
     }
-    public int[] createShortestPath(int index){
+    public int[] createShortestPath(City Start, City end){
         int[] distance = new int[adjacency.length]; // sum of all steps distances
         boolean[] isVisited = new boolean[adjacency.length];
-        fullSingle(distance,index);
-        
+        int[] previousCities = new int[adjacency.length];
+        fullSingle(distance);
+        Arrays.fill(previousCities, -1);
+        int startIndex = getCityIndex(Start);
+        distance[startIndex]=0;
         for(int i=0;i<distance.length-1;i++){
             int min  = findMinIndex(distance, isVisited);
             isVisited[min]=true;
@@ -115,12 +120,25 @@ public class CountryMap {
                     distance[j] = distance[min] + adjacency[min][j];
                 }
             }
+            for (int j = 0; j < adjacency.length; j++) {
+                if (adjacency[min][j] != Integer.MAX_VALUE) {
+                    int newDist = distance[min] + adjacency[min][j];
+                    if (newDist < distance[j]) {
+                        distance[j] = newDist;
+                        previousCities[j] = min;
+                    }
+                }
+            }
         }
-        return distance;
+        City[] path = new City[adjacency.length];
+        int endIndex = path.getCityIndex(end);
+        for (int i = endIndex; i != -1; i = previousCities[i]) {
+            addCity(cities[i]);
+        return cities;
     }
 
     
-
+    }*/
     
 }
 

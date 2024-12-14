@@ -14,8 +14,8 @@ public class Main {
         int numOfCity = 0;
         int numOfRoutes = 0;
         CountryMap map=null;
-        City initialCity;
-        City finalCity;
+        City initialCity=null;
+        City finalCity=null;
 
         try {
             reader = new Scanner(Paths.get("map1.txt"));
@@ -53,8 +53,11 @@ public class Main {
             //System.out.println(Arrays.toString(map.getCities()));
             //map.printAdjacency();
             //System.out.println(Arrays.toString(map.createShortestPath(0)));
-           System.out.println(Arrays.toString(map.createShortestPath(0)));
-           System.out.println(count);
+            WayFinder wf = new WayFinder(map);
+            if(initialCity!=null && finalCity!=null){
+                System.out.println(Arrays.toString(wf.createShortestPath(initialCity, finalCity)));
+
+            }
 
         } catch (Exception e) {
             System.out.println("Hata oluştu: " + e.getMessage());
