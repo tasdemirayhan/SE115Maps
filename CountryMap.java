@@ -62,6 +62,9 @@ public class CountryMap {
         }
         return -1;
     }
+    public City getCityByIndex(int index) {
+        return cities[index];
+    }
     public City findCityByLabel(String label) {
         for (City city : cities) {
             if (city.getLabel().equals(label)) {

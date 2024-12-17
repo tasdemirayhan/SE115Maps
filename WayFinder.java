@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class WayFinder {
     private CountryMap countryMap;
@@ -16,7 +18,7 @@ public class WayFinder {
         this.countryMap = countryMap;
     }
     // ziyaret edilmemiş en küçük indexi döndürür
-    public int findMinIndex(int[] dist, boolean[] visited) {
+    /*public int findMinIndex(int[] dist, boolean[] visited) {
         int minVal = Integer.MAX_VALUE;
         int minIndex = -1;
 
@@ -38,7 +40,7 @@ public class WayFinder {
         distance[startIndex]=0;
         for(int i=0;i<distance.length-1;i++){
             int min  = findMinIndex(distance, isVisited);
-            
+            isVisited[min]=true;
             // j indexli data ziyaret edilmemişse, min/j arasında bir kenar varsa
             // ve min üzerinden j'ye olan mesafe daha kısa ise distance[j] yi güncelle
             //distance[j], her tur distance[min] le tanımlanır
@@ -47,7 +49,6 @@ public class WayFinder {
                     distance[j] = distance[min] + countryMap.getAdjacency()[min][j];
                 }
             }
-            isVisited[min]=true;
             for (int j = 0; j < countryMap.getAdjacency().length; j++) {
                 if (countryMap.getAdjacency()[min][j] != Integer.MAX_VALUE) {
                     int newDist = distance[min] + countryMap.getAdjacency()[min][j];
@@ -76,6 +77,92 @@ public class WayFinder {
         }
         newArray[array.length] = city;
         array = newArray;
+    }*/
+    public String findFastestRoute(City start, City end) {
+        int n = countryMap.getNumberOfCity(); // Şehir sayısı
+        int startIndex = countryMap.getCityIndex(start); // Başlangıç şehri indeksi
+        int endIndex = countryMap.getCityIndex(end);     // Bitiş şehri indeksi
+
+        // 1. En kısa yol için diziler
+        int[] dist = new int[n];          // Mesafeleri saklar
+        boolean[] visited = new boolean[n]; // Ziyaret edilen şehirler
+        int[] previous = new int[n];      // Bir önceki şehirleri tutar
+
+        // 2. Dizileri başlat
+        for (int i = 0; i < n; i++) {
+            dist[i] = Integer.MAX_VALUE; // İlk başta tüm mesafeler sonsuz kabul edilir
+            visited[i] = false;          // Hiçbir şehir ziyaret edilmedi
+            previous[i] = -1;            // Yol henüz oluşmadı
+        }
+        dist[startIndex] = 0; // Başlangıç şehri mesafesi 0 olarak atanır
+
+        // 3. Dijkstra Algoritması
+        for (int i = 0; i < n; i++) {
+            // Ziyaret edilmeyen şehirlerden en küçük mesafeye sahip olanı bul
+            int u = findMinDistance(dist, visited);
+            if (u == -1) break; // Eğer erişilemeyen bir şehir varsa çık
+
+            visited[u] = true; // Şehri ziyaret ettik
+
+            // Komşuları güncelle
+            for (int v = 0; v < n; v++) {
+                int time = countryMap.getAdjacency()[u][v]; // Şehirler arasındaki zaman
+                if (!visited[v] && time != Integer.MAX_VALUE && dist[u] + time < dist[v]) {
+                    dist[v] = dist[u] + time;
+                    previous[v] = u; // Bir önceki şehir olarak 'u' atanır
+                }
+            }
+        }
+
+        // 4. Rotayı oluştur (Eğer yol yoksa boş dizi döner)
+        if (dist[endIndex] == Integer.MAX_VALUE) {
+            return "Route does not exist..."; // Yol bulunamadı
+        }
+        
+        int index=endIndex;
+        String str="";
+        str+=countryMap.getCityByIndex(index).getLabel();
+        int totalTime = dist[endIndex];
+        while(previous[index]!=startIndex){
+            str=countryMap.getCityByIndex(previous[index]).getLabel() + " ->" +str;
+            index=previous[index];
+            
+        }
+        str=countryMap.getCityByIndex(startIndex).getLabel() + " ->" +str;
+        str = "Fastest Way: " + str + "\nTotal Time: " + totalTime;
+        return str;
+    }
+    //Fastest Way: A -> C -> E
+    //Total Time: 50 min
+    // Ziyaret edilmemiş şehirler arasında minimum mesafeyi bul
+    public int findMinDistance(int[] dist, boolean[] visited) {
+        int minIndex = -1;
+        int minValue = Integer.MAX_VALUE;
+
+        for (int i = 0; i < dist.length; i++) {
+            if (!visited[i] && dist[i] < minValue) {
+                minValue = dist[i];
+                minIndex = i;
+            }
+        }
+        return minIndex;
     }
 
+    // Önceki diziyi kullanarak yolu yeniden oluştur
+    public City[] reconstructPath(int[] previous, int start, int end) {
+        int[] path = new int[previous.length]; // Yolu geçici olarak tutacak
+        int count = 0; // Yol uzunluğu
+
+        // Bitişten başlayarak başa doğru ilerle
+        for (int at = end; at != -1; at = previous[at]) {
+            path[count++] = at;
+        }
+
+        // Ters çevirerek yolu oluştur
+        City[] result = new City[count];
+        for (int i = 0; i < count; i++) {
+            result[i] = countryMap.getCityByIndex(path[count - 1 - i]);
+        }
+        return result;
+    }
 }
