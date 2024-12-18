@@ -149,7 +149,7 @@ public class WayFinder {
     }
 
     // Önceki diziyi kullanarak yolu yeniden oluştur
-    public City[] reconstructPath(int[] previous, int start, int end) {
+    /*public City[] reconstructPath(int[] previous, int start, int end) {
         int[] path = new int[previous.length]; // Yolu geçici olarak tutacak
         int count = 0; // Yol uzunluğu
 
@@ -164,5 +164,5 @@ public class WayFinder {
             result[i] = countryMap.getCityByIndex(path[count - 1 - i]);
         }
         return result;
-    }
+    }*/
 }

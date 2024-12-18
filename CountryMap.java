@@ -90,58 +90,5 @@ public class CountryMap {
             System.out.println();
         }
     }
-     
-    // ziyaret edilmemiş en küçük indexi döndürür
-   /*  private int findMinIndex(int[] dist, boolean[] visited) {
-        int minVal = Integer.MAX_VALUE;
-        int minIndex = -1;
-
-        for (int i = 0; i < dist.length; i++) {
-            if (!visited[i] && dist[i] < minVal) {
-                minVal= dist[i];
-                minIndex = i;
-            }
-        }
-        return minIndex; 
-    }
-    public int[] createShortestPath(City Start, City end){
-        int[] distance = new int[adjacency.length]; // sum of all steps distances
-        boolean[] isVisited = new boolean[adjacency.length];
-        int[] previousCities = new int[adjacency.length];
-        fullSingle(distance);
-        Arrays.fill(previousCities, -1);
-        int startIndex = getCityIndex(Start);
-        distance[startIndex]=0;
-        for(int i=0;i<distance.length-1;i++){
-            int min  = findMinIndex(distance, isVisited);
-            isVisited[min]=true;
-            // j indexli data ziyaret edilmemişse, min/j arasında bir kenar varsa
-            // ve min üzerinden j'ye olan mesafe daha kısa ise distance[j] yi güncelle
-            //distance[j], her tur distance[min] le tanımlanır
-            for(int j=0;j<distance.length;j++){
-                if(!isVisited[j] && adjacency[min][j]!=0 && distance[min]!=Integer.MAX_VALUE && distance[min] + adjacency[min][j]<distance[j]){
-                    distance[j] = distance[min] + adjacency[min][j];
-                }
-            }
-            for (int j = 0; j < adjacency.length; j++) {
-                if (adjacency[min][j] != Integer.MAX_VALUE) {
-                    int newDist = distance[min] + adjacency[min][j];
-                    if (newDist < distance[j]) {
-                        distance[j] = newDist;
-                        previousCities[j] = min;
-                    }
-                }
-            }
-        }
-        City[] path = new City[adjacency.length];
-        int endIndex = path.getCityIndex(end);
-        for (int i = endIndex; i != -1; i = previousCities[i]) {
-            addCity(cities[i]);
-        return cities;
-    }
-
-    
-    }*/
-    
 }
 
