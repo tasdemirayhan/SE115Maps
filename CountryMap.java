@@ -1,12 +1,12 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class CountryMap {
+    // variables
     private City[] cities;
     private int[][] adjacency;
     private int numberOfCity;
     private int numCities;
-    
+    // constructor
     public CountryMap(int numberOfCity) {
         this.numberOfCity = numberOfCity;
         cities= new City[numberOfCity];
@@ -14,7 +14,7 @@ public class CountryMap {
         fullDouble(adjacency);
         this.numCities=0;
     }
-
+    // getters and setters
     public City[] getCities() {
         return cities;
     }
@@ -33,6 +33,7 @@ public class CountryMap {
     public void setNumberOfCity(int numberOfCity) {
         this.numberOfCity = numberOfCity;
     }
+    // obje oluştuğunda constructordan double arrayi dijkstraya uygun doldurur
     public void fullDouble(int[][] arr){
         for (int i=0;i<arr.length;i++) {
             for(int j=0;j<arr[i].length;j++){
@@ -45,15 +46,11 @@ public class CountryMap {
             }
         }
     }
-    public void fullSingle(int[] arr){
-        for (int i=0;i<arr.length;i++) {
-            arr[i]=Integer.MAX_VALUE;
-        }
-        //arr[index]=0;
-    }
+    // city'i arrayin içine ekler
     public void addCity(City city){
         cities[numCities++] = city;        
     }
+    //parametreye girilen city'nin bulunduğu indexi döndürür
     public int getCityIndex(City city){
         for (int i=0;i<cities.length;i++) {
             if(city.getLabel().equals(cities[i].getLabel())){
@@ -62,9 +59,15 @@ public class CountryMap {
         }
         return -1;
     }
+    // arrayde istediğimiz indexteki şehri döndürür
     public City getCityByIndex(int index) {
         return cities[index];
     }
+    //arrayin uzunluğunu döndürür
+    public int getLength(){
+        return cities.length;
+    }
+    //String city label'ından City objesine döndürür
     public City findCityByLabel(String label) {
         for (City city : cities) {
             if (city.getLabel().equals(label)) {
@@ -73,6 +76,7 @@ public class CountryMap {
         }
         return null;
     }
+    //birim rotaları oluşturur
     public void addRoute(String label1, String label2 , int time){
         City city1 = findCityByLabel(label1);
         City city2 = findCityByLabel(label2);
@@ -80,14 +84,6 @@ public class CountryMap {
             
             adjacency[getCityIndex(city2)][getCityIndex(city1)]= time;
             adjacency[getCityIndex(city1)][getCityIndex(city2)]= time;
-        }
-    }
-    public void printAdjacency(){
-        for (int i=0;i<adjacency.length;i++) {
-            for(int j=0;j<adjacency[i].length;j++){
-                System.out.printf("%11d", adjacency[i][j]);
-            }
-            System.out.println();
         }
     }
 }
