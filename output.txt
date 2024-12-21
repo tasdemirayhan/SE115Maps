@@ -1,2 +1,1 @@
-Fastest Way: A ->B ->D ->C ->E
-Total Time: 100
+"This file cannot read because there are undefined routes or labels..."

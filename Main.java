@@ -7,8 +7,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        display(args);
+    }
+    public static void display(String[] argument) {
 
-        if (args.length < 1) {
+        if (argument.length < 1) {
             System.out.println("Lütfen bir dosya adı belirtin!");
             System.exit(1);
         }
@@ -16,13 +19,13 @@ public class Main {
         Scanner reader = null;
         Formatter format = null;
         int count = 0;
-        int routeCount = 0;
+        
         int numOfCity = 0;
         int numOfRoutes = 0;
         CountryMap map = null;
         City initialCity = null;
         City finalCity = null;
-        String fileName = args[0];
+        String fileName = argument[0];
 
         try {
 
@@ -56,7 +59,7 @@ public class Main {
                     String city2 = datas[1];
                     int time = Integer.parseInt(datas[2]);
                     map.addRoute(city1, city2, time);
-                    routeCount++;
+                    
                 } else if (count == 3 + numOfRoutes) {
                     initialCity = map.findCityByLabel(datas[0]);
                     finalCity = map.findCityByLabel(datas[1]);
@@ -70,8 +73,6 @@ public class Main {
             if (initialCity != null && finalCity != null) {
                 System.out.println("File read is successful!");
                 System.out.println("Continue on \"output.txt\" file");
-                // System.out.println(format.format("%s", wf.findFastestRoute(initialCity,
-                // finalCity)));
                 format.format("%s", wf.findFastestRoute(initialCity, finalCity));
             }
 
@@ -80,13 +81,6 @@ public class Main {
         } finally {
             if (reader != null) {
                 reader.close();
-            }
-
-            if (routeCount != numOfRoutes) {
-                format.format("%s", "\"This file cannot read because number of route values are different...\"");
-                System.out.println("---FileReadError---\n you can see the error on \"output.txt\"...");
-                format.close();
-                System.exit(0);
             }
             if (format != null) {
                 format.close();
@@ -102,7 +96,7 @@ public class Main {
         }
         return false;
     }
-
+    
     public static boolean isValid(String fileName, Formatter format) {
         int count = 0;
         int cityNum = -1;
@@ -131,7 +125,7 @@ public class Main {
 
                 else if (count > 2 && datas.length == 3 && labels != null) {
                     if (!(isThere(labels, datas[0]) && isThere(labels, datas[1]) && datas[2].matches("\\d+"))) {
-                        format.format("%s", "\"This file cannot read because there are undefined labels...\"");
+                        format.format("%s", "\"This file cannot read because there are undefined routes or labels...\"");
                         format.close();
                         return false;
                     }
@@ -158,6 +152,7 @@ public class Main {
                 reader.close();
             }
         }
+        format.close();
         return true;
     }
 }
